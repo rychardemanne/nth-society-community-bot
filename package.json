@@ -1,0 +1,32 @@
+{
+  "name": "nth-society-community-bot",
+  "version": "0.0.1",
+  "description": "A bot designed to support the Nth Society game dev community",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thrize/nth-society-community-bot.git"
+  },
+  "keywords": [
+    "node", "bot", "steemit", "steem"
+  ],
+  "author": "thrize",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thrize/nth-society-community-bot"
+  },
+  "homepage": "https://github.com/thrize/nth-society-community-bot",
+  "dependencies": {
+    "body-parser": "1.13.3",
+    "express": "4.13.3",
+    "atob": "^2.0.3",
+    "btoa": "^1.1.2",
+    "twit": "2.2.5",
+    "mongodb": "2.0.43",
+    "moment": "2.17.1"
+  }
+}

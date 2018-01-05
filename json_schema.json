@@ -1,0 +1,34 @@
+{
+	"general":{
+		"last_block_processed": 0,
+		"work_pool":3412
+	},
+	"known_users":[
+		{
+			"steemit_name":"personz",
+			"github_name":"thrize",
+			"work_score":33
+		}
+	],
+	"known_repos":[
+		{
+			"github_name":"thrize",
+			"repo":"nth-society",
+			"fork_list_url":"https://something",
+			"num_forks":2
+		}
+	],
+	"posts_backlog":[
+		{
+			"author":"author",
+			"permlink":"permlink"
+		}
+	],
+	"vote_backlog":[
+		{
+			"author":"author",
+			"permlink":"permlink",
+			"percentage":100
+		}
+	]
+}

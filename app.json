@@ -1,0 +1,13 @@
+{
+  "name": "nth-society-community-bot",
+  "description": "A bot designed to support the Nth Society game dev community",
+  "repository": "https://github.com/thrize/nth-society-community-bot",
+  "keywords": ["node", "bot", "steemit", "steem"],
+  "addons": ["mongolab", "scheduler:standard"],
+  "env": {
+    "STEEM_USER": "",
+    "POSTING_KEY_PRV": "",
+    "ACTIVE": "true",
+    "STARTING_BLOCK_NUM": "13247766"
+  }
+}
