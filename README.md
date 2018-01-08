@@ -12,4 +12,4 @@ Try this one click deployment to Heroku cloud computing environment
 
 ### License
 
-This software uses the standard [MIT license](/LICENSE)
+This software uses the standard [CC0 license](/LICENSE), AKA [No Copyright](https://creativecommons.org/publicdomain/zero/1.0/).
