@@ -3,7 +3,7 @@
 const
   path = require("path"),
   mongodb = require("mongodb"),
-  lib = require('./lib.js'),;
+  lib = require('./lib.js');
 
 
 function main() {
