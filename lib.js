@@ -6,6 +6,7 @@ const
   mongodb = require("mongodb"),
   moment = require('moment'),
   S = require('string'),
+  fs = require('fs'),
   wait = require('wait.for');
 
 const
@@ -24,10 +25,9 @@ var db;
 var mAccount = null;
 var mProperties = null;
 var mChainInfo = null;
-var mTestAuthorList = null;
+
 
 // Connect to the database first
-
 
 function start(callback) {
   mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
@@ -39,11 +39,8 @@ function start(callback) {
     db = database;
     console.log("Database connection ready");
 
-    //steem.config.set('websocket','wss://gtg.steem.house:8090');
     init(function () {
-      getLastInfos(function () {
-        callback();
-      });
+      callback();
     });
   });
 }
@@ -61,15 +58,6 @@ function init(callback) {
     console.log("account: "+JSON.stringify(mAccount));
     // set up some vars
     MIN_SP = Number(process.env.MIN_SP);
-    // get test list, if any
-    if (process.env.TEST_AUTHOR_LIST !== undefined
-      && process.env.TEST_AUTHOR_LIST !== null
-      && process.env.TEST_AUTHOR_LIST.localeCompare("null") != 0) {
-      mTestAuthorList = process.env.TEST_AUTHOR_LIST.split(",");
-      for (var i = 0 ; i < mTestAuthorList.length ; i++) {
-        mTestAuthorList[i] = mTestAuthorList[i].toLowerCase().trim();
-      }
-    }
     callback();
   });
 }
@@ -106,10 +94,12 @@ function getDbCursor(db_name, limit) {
 
 function getDb(db_name, callback) {
   db.collection(db_name).find({}).toArray(function(err, data) {
-    if (err || data === null || data === undefined) {
-      callback(data);
+    if (callback !== undefined && callback !== null) {
+      if (err || data === null || data === undefined) {
+        callback(data);
+      }
+      callback(null);
     }
-    callback(null);
   });
 }
 
@@ -119,7 +109,9 @@ function dropDb(db_name) {
 
 function saveDb(db_name, obj, callback) {
   db.collection(db_name).save(obj, function (err, data) {
-    callback(err, data);
+    if (callback !== undefined && callback !== null) {
+      callback(err, data);
+    }
   });
 }
 
@@ -220,6 +212,20 @@ function timeout_wrapper(delay, callback) {
   }, delay);
 }
 
+function loadFileToString(filename, callback) {
+  fs.readFile(path.join(__dirname, filename), {encoding: 'utf-8'}, function(err,data) {
+    var str = "";
+    if (err) {
+      console.log(err);
+    } else {
+      str = data;
+    }
+    if (callback) {
+      callback(str);
+    }
+  });
+}
+
 // EXPORTS
 
 // consts
@@ -262,3 +268,4 @@ module.exports.steem_getContent_wrapper = steem_getContent_wrapper;
 
 module.exports.start = start;
 module.exports.timeout_wrapper = timeout_wrapper;
+module.exports.loadFileToString = loadFileToString;

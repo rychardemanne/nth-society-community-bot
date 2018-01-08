@@ -7,7 +7,9 @@ const
   moment = require('moment'),
   S = require('string'),
   wait = require('wait.for'),
-  lib = require('./lib.js');
+  lib = require('./lib.js'),
+  ApiGithub = require('api-github'),
+  github_api = new ApiGithub({});
 
 var
   MAX_BLOCKS_PER_RUN = 9000;
@@ -17,11 +19,14 @@ function main() {
   lib.start(function () {
     updateGitHubRepoForks(function () {
       checkGitHubUsersForKnownRepoActivity(function () {
+        console.log("Finished");
+        /*
         checkBlockchainForPostsAndComments(lib.getLastBlockProcessed() + 1, function () {
           checkPostsInBacklogForActivity(function () {
             console.log("Finished");
           });
         });
+        */
       });
     });
   });
@@ -29,7 +34,18 @@ function main() {
 
 function updateGitHubRepoForks(callback) {
   // TODO
-  callback();
+  lib.getDbCursor(lib.DB_KNOWN_REPOS).forEach(function(doc) {
+    // handle
+    github_api.repos
+      .find(doc["github_name"] + "/" + doc["repo"])
+      .then(function(repos) {
+        console.log(repos);
+      })
+      .catch(console.error);
+  }, function(err) {
+    // done or error
+    callback();
+  });
 }
 
 function checkGitHubUsersForKnownRepoActivity(callback) {

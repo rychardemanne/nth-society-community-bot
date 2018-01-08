@@ -1,0 +1,23 @@
+{
+	"general":{
+		"last_block_processed":18770227,
+		"work_pool":0
+	},
+	"known_users":[
+		{
+			"steemit_name":"personz",
+			"github_name":"thrize",
+			"work_score":0
+		}
+	],
+	"known_repos":[
+		{
+			"github_name":"thrize",
+			"repo":"nth-society",
+			"fork_list_url":null,
+			"num_forks":0
+		}
+	],
+	"posts_backlog":[],
+	"vote_backlog":[]
+}
