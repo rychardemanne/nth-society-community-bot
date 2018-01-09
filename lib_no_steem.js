@@ -64,8 +64,6 @@ function init(callback) {
       console.error(err);
       console.log("Allowing steem to fail because no steem lib is used");
     }
-    // set up some vars
-    MIN_SP = Number(process.env.MIN_SP);
     callback();
   });
 }

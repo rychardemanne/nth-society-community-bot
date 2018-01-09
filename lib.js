@@ -65,8 +65,6 @@ function init(callback) {
       console.error(err);
       process.exit();
     }
-    // set up some vars
-    MIN_SP = Number(process.env.MIN_SP);
     callback();
   });
 }
