@@ -31,7 +31,8 @@ function main() {
               && firstTimeDbJson[dbName] !== null
               && firstTimeDbJson[dbName].length > 0) {
             console.log(" - is valid");
-            for (var item in firstTimeDbJson[dbName]) {
+            for (var itemAttrib in firstTimeDbJson[dbName]) {
+              var item = firstTimeDbJson[dbName][itemAttrib];
               console.log(" - - adding item: "+JSON.stringify(item));
               lib.saveDb(dbName, item, function(err, data) {
                 if (err) {
