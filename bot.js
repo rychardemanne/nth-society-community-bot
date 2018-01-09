@@ -56,26 +56,38 @@ function checkGitHubUsersForKnownRepoActivity(callback) {
 function checkBlockchainForPostsAndComments(startAtBlockNum, callback) {
   wait.launchFiber(function() {
     // get some info first
-    var headBlock = wait.for(lib.steem_getBlockHeader_wrapper, lib.getProperties().head_block_number);
-    var latestBlockMoment = moment(headBlock.timestamp, moment.ISO_8601);
-    // chain stuff
-    var rewardfund_info = wait.for(lib.steem_getRewardFund_wrapper, "post");
-    var price_info = wait.for(lib.steem_getCurrentMedianHistoryPrice_wrapper);
+    try {
+      var headBlock = wait.for(lib.steem_getBlockHeader_wrapper, lib.getProperties().head_block_number);
+      var latestBlockMoment = moment(headBlock.timestamp, moment.ISO_8601);
+      // chain stuff
+      var rewardfund_info = wait.for(lib.steem_getRewardFund_wrapper, "post");
+      var price_info = wait.for(lib.steem_getCurrentMedianHistoryPrice_wrapper);
 
-    var reward_balance = rewardfund_info.reward_balance;
-    var recent_claims = rewardfund_info.recent_claims;
-    var reward_pool = reward_balance.replace(" STEEM", "") / recent_claims;
+      var reward_balance = rewardfund_info.reward_balance;
+      var recent_claims = rewardfund_info.recent_claims;
+      var reward_pool = reward_balance.replace(" STEEM", "") / recent_claims;
 
-    var sbd_per_steem = price_info.base.replace(" SBD", "") / price_info.quote.replace(" STEEM", "");
+      var sbd_per_steem = price_info.base.replace(" SBD", "") / price_info.quote.replace(" STEEM", "");
 
-    var steem_per_vest = lib.getProperties().total_vesting_fund_steem.replace(" STEEM", "")
-      / lib.getProperties().total_vesting_shares.replace(" VESTS", "");
+      var steem_per_vest = lib.getProperties().total_vesting_fund_steem.replace(" STEEM", "")
+        / lib.getProperties().total_vesting_shares.replace(" VESTS", "");
+    } catch(err) {
+      console.error(err);
+      callback();
+      return;
+    }
 
     // set up vars
     var currentBlockNum = 0;
     for (var i = startAtBlockNum; i <= lib.getProperties().head_block_number && i <= (startAtBlockNum + MAX_BLOCKS_PER_RUN); i++) {
       currentBlockNum = i;
-      var block = wait.for(lib.steem_getBlock_wrapper, i);
+      try {
+        block = wait.for(lib.steem_getBlock_wrapper, i);
+      } catch(err) {
+        console.error(err);
+        callback();
+        return;
+      }
       //console.log("block info: "+JSON.stringify(block));
       var transactions = block.transactions;
       for (var j = 0; j < transactions.length; j++) {
@@ -88,7 +100,12 @@ function checkBlockchainForPostsAndComments(startAtBlockNum, callback) {
               && opName.localeCompare("vote") == 0) {
 
               // check voter db voter
-              var voterInfos = wait.for(lib.getVoterFromDb, opDetail.voter);
+              var voterInfos = null;
+              try {
+                voterInfos = wait.for(lib.getVoterFromDb, opDetail.voter);
+              } catch(err) {
+                console.error(err);
+              }
               if (voterInfos === null || voterInfos === undefined) {
                 continue; //not a target
               }
@@ -96,8 +113,11 @@ function checkBlockchainForPostsAndComments(startAtBlockNum, callback) {
 
               // get post content and rshares of vote
               var content;
-              content = wait.for(lib.steem_getContent_wrapper, opDetail.author,
-                opDetail.permlink);
+              try {
+                content = wait.for(lib.steem_getContent_wrapper, opDetail.author, opDetail.permlink);
+              } catch(err) {
+                 console.error(err);
+              }
               if (content === undefined || content === null) {
                 console.log("Couldn't process operation, continuing." +
                   " Error: post content response not defined");
@@ -152,7 +172,12 @@ function checkBlockchainForPostsAndComments(startAtBlockNum, callback) {
 
               // flag
               // update account
-              var accounts = wait.for(lib.steem_getAccounts_wrapper, process.env.STEEM_USER);
+              try {
+                var accounts = wait.for(lib.steem_getAccounts_wrapper, process.env.STEEM_USER);
+              } catch(err) {
+                console.error(err);
+                continue;
+              }
               lib.setAccount(accounts[0]);
               var vp = recalcVotingPower(latestBlockMoment);
               var vestingSharesParts = lib.getAccount().vesting_shares.split(" ");
@@ -273,12 +298,17 @@ function checkPostsInBacklogForActivity(callback) {
 
 function recalcVotingPower(latestBlockMoment) {
   // update account
-  var accounts = wait.for(lib.steem_getAccounts_wrapper, process.env.STEEM_USER);
-  var account = accounts[0];
+  try {
+    var accounts = wait.for(lib.steem_getAccounts_wrapper, process.env.STEEM_USER);
+  } catch(err) {
+    console.error(err);
+    return 0;
+  }
   if (account === null || account === undefined) {
     console.log("Could not get bot account detail");
     return 0;
   }
+  var account = accounts[0];
   lib.setAccount(accounts[0]);
   var vp = account.voting_power;
   var lastVoteTime = moment(account.last_vote_time);

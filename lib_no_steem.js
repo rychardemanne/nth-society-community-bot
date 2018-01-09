@@ -47,18 +47,23 @@ function start(callback) {
 function init(callback) {
   wait.launchFiber(function() {
     // get steem global properties first, needed for SP calc
-    mProperties = wait.for(steem_getSteemGlobalProperties_wrapper);
-    console.log("global properties: "+JSON.stringify(mProperties));
-    mChainInfo = wait.for(steem_getChainProperties_wrapper);
-    console.log("chain info: "+JSON.stringify(mChainInfo));
-    // get Steem Power of bot account
-    var accounts = wait.for(steem_getAccounts_wrapper, process.env.STEEM_USER);
-    if (accounts !== undefined && accounts !== null && accounts.length > 0) {
-      mAccount = accounts[0];
-    } else {
-      mAccount = null;
+    try {
+      mProperties = wait.for(steem_getSteemGlobalProperties_wrapper);
+      console.log("global properties: "+JSON.stringify(mProperties));
+      mChainInfo = wait.for(steem_getChainProperties_wrapper);
+      console.log("chain info: "+JSON.stringify(mChainInfo));
+      // get Steem Power of bot account
+      var accounts = wait.for(steem_getAccounts_wrapper, process.env.STEEM_USER);
+      if (accounts !== undefined && accounts !== null && accounts.length > 0) {
+        mAccount = accounts[0];
+      } else {
+        mAccount = null;
+      }
+      console.log("account: "+JSON.stringify(mAccount));
+    } catch(err) {
+      console.error(err);
+      console.log("Allowing steem to fail because no steem lib is used");
     }
-    console.log("account: "+JSON.stringify(mAccount));
     // set up some vars
     MIN_SP = Number(process.env.MIN_SP);
     callback();
