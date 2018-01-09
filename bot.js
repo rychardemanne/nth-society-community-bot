@@ -38,8 +38,16 @@ function updateGitHubRepoForks(callback) {
     // handle
     github_api.repos
       .find(doc["github_name"] + "/" + doc["repo"])
-      .then(function(repos) {
-        console.log(repos);
+      .then(function(data) {
+        console.log("repos");
+        console.log(data);
+      })
+      .catch(console.error);
+    github_api.fork
+      .find(doc["github_name"] + "/" + doc["repo"])
+      .then(function(data) {
+        console.log("forks");
+        console.log(data);
       })
       .catch(console.error);
   }, function(err) {
