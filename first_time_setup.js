@@ -24,7 +24,8 @@ function main() {
           lib.DB_POSTS_BACKLOG,
           lib.DB_VOTE_BACKLOG
         ];
-        for (var dbName in listTypeDbs) {
+        for (var dbNameAttrib in listTypeDbs) {
+          var dbName = listTypeDbs[dbNameAttrib];
           console.log("Looking at db "+dbName+" ...");
           if (firstTimeDbJson[dbName] !== undefined
               && firstTimeDbJson[dbName] !== null
