@@ -25,10 +25,13 @@ function main() {
           lib.DB_VOTE_BACKLOG
         ];
         for (var dbName in listTypeDbs) {
+          console.log("Looking at db "+dbName+" ...");
           if (firstTimeDbJson[dbName] !== undefined
               && firstTimeDbJson[dbName] !== null
               && firstTimeDbJson[dbName].length > 0) {
+            console.log(" - is valid");
             for (var item in firstTimeDbJson[dbName]) {
+              console.log(" - - adding item: "+JSON.stringify(item));
               lib.saveDb(dbName, item, function(err, data) {
                 if (err) {
                   console.error(err);
