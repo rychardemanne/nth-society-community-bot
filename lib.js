@@ -49,7 +49,8 @@ function init(callback) {
   wait.launchFiber(function() {
     // get steem global properties first, needed for SP calc
     // TODO : remove this when steem-js fixed
-    steem.config.set('websocket','wss://gtg.steem.house:8090');
+    //steem.config.set('websocket','wss://gtg.steem.house:8090');
+    steem.config.set('websocket','http://api.steemit.com');
     try {
       mProperties = wait.for(steem_getSteemGlobalProperties_wrapper);
       console.log("global properties: "+JSON.stringify(mProperties));
