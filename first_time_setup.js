@@ -3,7 +3,7 @@
 const
   path = require("path"),
   mongodb = require("mongodb"),
-  lib = require('./lib_no_steem.js'); //TODO : return to use lib.js after steem-js updated to 0.7
+  lib = require('./lib.js');
 
 
 function main() {
