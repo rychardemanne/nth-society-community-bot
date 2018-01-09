@@ -43,8 +43,8 @@ function updateGitHubRepoForks(callback) {
         console.log(data);
       })
       .catch(console.error);
-    github_api.fork
-      .find(doc["github_name"] + "/" + doc["repo"])
+    github_api.repos
+      .fork(doc["github_name"] + "/" + doc["repo"])
       .then(function(data) {
         console.log("forks");
         console.log(data);
