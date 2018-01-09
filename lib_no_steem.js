@@ -1,7 +1,6 @@
 'use strict';
 
 const
-  steem = require("steem"),
   path = require("path"),
   mongodb = require("mongodb"),
   moment = require('moment'),
@@ -120,51 +119,34 @@ function saveDb(db_name, obj, callback) {
 }
 
 // --- STEEM FUNCS
+// NOTE!!! ALL FUNCTIONS JUST STUBS, THIS IS THE NO STEEM VERSION OF THE LIB SCRIPT
 
 /*
  getSteemPowerFromVest(vest):
  * converts vesting steem (from get user query) to Steem Power (as on Steemit.com website)
  */
 function getSteemPowerFromVest(vest) {
-  try {
-    return steem.formatter.vestToSteem(
-      vest,
-      parseFloat(mProperties.total_vesting_shares),
-      parseFloat(mProperties.total_vesting_fund_steem)
-    );
-  } catch(err) {
-    return 0;
-  }
+  return 0;
 }
 
 function steem_getBlockHeader_wrapper(blockNum, callback) {
-  steem.api.getBlockHeader(blockNum, function(err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getBlock_wrapper(blockNum, callback) {
-  steem.api.getBlock(blockNum, function(err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getDiscussionsByCreated_wrapper(query, callback) {
-  steem.api.getDiscussionsByCreated(query, function (err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getSteemGlobalProperties_wrapper(callback) {
-  steem.api.getDynamicGlobalProperties(function(err, properties) {
-    callback(err, properties);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getChainProperties_wrapper(callback) {
-  steem.api.getChainProperties(function(err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 /**
@@ -173,39 +155,27 @@ function steem_getChainProperties_wrapper(callback) {
  * @param callback, function with usual (err, data) args
  */
 function steem_getRewardFund_wrapper(type, callback) {
-  steem.api.getRewardFund(type, function (err, data) {
-    callback(err, data);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getCurrentMedianHistoryPrice_wrapper(callback) {
-  steem.api.getCurrentMedianHistoryPrice(function(err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getAccounts_wrapper(author, callback) {
-  steem.api.getAccounts([author], function(err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getAccountCount_wrapper(callback) {
-  steem.api.getAccountCount(function(err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getAccountHistory_wrapper(start, limit, callback) {
-  steem.api.getAccountHistory(process.env.STEEM_USER, start, limit, function (err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 function steem_getContent_wrapper(author, permlink, callback) {
-  steem.api.getContent(author, permlink, function (err, result) {
-    callback(err, result);
-  });
+  callback(new Error("Called a stub steem function"), null);
 }
 
 // --- MISC FUNCS

@@ -1,13 +1,13 @@
 'use strict';
 
 const
-  steem = require("steem"),
+  //steem = require("steem"),
   path = require("path"),
   mongodb = require("mongodb"),
   moment = require('moment'),
   S = require('string'),
   wait = require('wait.for'),
-  lib = require('./lib.js'),
+  lib = require('./lib_no_steem.js'), //TODO : return to use lib.js after steem-js updated to 0.7
   ApiGithub = require('api-github'),
   github_api = new ApiGithub({});
 
@@ -212,8 +212,10 @@ function checkBlockchainForPostsAndComments(startAtBlockNum, callback) {
               }
               if (!restricted) {
                 if (process.env.ACTIVE !== undefined
-                  && process.env.ACTIVE !== null
-                  && process.env.ACTIVE.localeCompare("true") == 0) {
+                    && process.env.ACTIVE !== null
+                    && process.env.ACTIVE.localeCompare("true") == 0) {
+                  //TODO: restore when steem-js upgraded to 0.7
+                  /*
                   try {
                     var voteResult = wait.for(steem.broadcast.vote,
                       process.env.POSTING_KEY_PRV,
@@ -229,6 +231,7 @@ function checkBlockchainForPostsAndComments(startAtBlockNum, callback) {
                     //callback();
                     //return;
                   }
+                  */
                   console.log("Wait 3.5 seconds to allow vote limit to" +
                     " reset");
                   wait.for(lib.timeout_wrapper, 3500);
