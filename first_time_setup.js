@@ -28,14 +28,17 @@ function main() {
           if (firstTimeDbJson[dbName] !== undefined
               && firstTimeDbJson[dbName] !== null
               && firstTimeDbJson[dbName].length > 0) {
-            lib.saveDb(dbName, firstTimeDbJson[dbName], function(err, data) {
-              if (err) {
-                console.error(err);
-              }
-            });
+            for (var item in firstTimeDbJson[dbName]) {
+              lib.saveDb(dbName, item, function(err, data) {
+                if (err) {
+                  console.error(err);
+                }
+              });
+            }
           }
         }
       }
+      process.exit();
     });
   });
 }
